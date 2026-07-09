@@ -199,54 +199,6 @@ a { text-decoration: none; color: inherit; }
   transition: background .2s;
 }
 .waitlist__btn:hover { background: #f0f0f0; }
-.waitlist__btn:disabled { opacity: .55; cursor: default; }
-
-/* Honeypot – für Menschen unsichtbar, für Screenreader ausgeblendet */
-.waitlist__hp {
-  position: absolute;
-  left: -9999px;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* ── Status & Consent ── */
-.signup {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-}
-
-.waitlist__status {
-  font-family: 'Google Sans', sans-serif;
-  font-size: 14px;
-  line-height: 1.5;
-  text-align: center;
-  margin: 16px 0 0;
-  min-height: 21px;
-  opacity: 0;
-  transition: opacity .2s;
-}
-.waitlist__status.is-visible { opacity: 1; }
-.waitlist__status.is-ok      { color: #132532; font-weight: 500; }
-.waitlist__status.is-error   { color: #8f2323; font-weight: 500; }
-
-.waitlist__consent {
-  font-family: 'Google Sans', sans-serif;
-  font-size: 12px;
-  line-height: 1.6;
-  text-align: center;
-  color: rgba(19, 37, 50, .6);
-  margin: 10px 0 0;
-  max-width: 520px;
-}
-.waitlist__consent a {
-  color: rgba(19, 37, 50, .85);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
 
 /* ── Footer Nav (bottom) ── */
 .footer-nav {
@@ -276,38 +228,38 @@ a { text-decoration: none; color: inherit; }
 
 /* Laptops — just trim the form to fit narrower cards (type scales via clamp). */
 @media (max-width: 1280px) {
-  .waitlist { width: 100%; max-width: 560px; }
-  .waitlist__btn { width: 220px; }
-  .logo { top: 28px; left: 48px; }
-  .logo svg { width: 40px; height: 40px; }
-  .footer-nav { bottom: 28px; gap: 48px; }
+  .waitlist       { width: 100%; max-width: 560px; }
+  .waitlist__btn  { width: 220px; }
+  .logo           { top: 28px; left: 48px; }
+  .logo svg       { width: 40px; height: 40px; }
+  .footer-nav     { bottom: 28px; gap: 48px; }
 }
 
 /* Tablet — fill the viewport, lighten radius/padding. */
 @media (max-width: 1024px) {
-  body { padding: 12px; }
+  body            { padding: 12px; }
   .hero {
     aspect-ratio: auto;
     border-radius: 24px;
     background-position: center bottom;
     padding: 96px 6% 88px;
   }
-  .hero__content { width: 86%; }
-  .waitlist { max-width: 520px; }
-  .waitlist__btn { width: 200px; }
-  .logo { top: 24px; left: 32px; }
-  .logo svg { width: 36px; height: 36px; }
-  .footer-nav { bottom: 24px; gap: 40px; }
+  .hero__content  { width: 86%; }
+  .waitlist       { max-width: 520px; }
+  .waitlist__btn  { width: 200px; }
+  .logo           { top: 24px; left: 32px; }
+  .logo svg       { width: 36px; height: 36px; }
+  .footer-nav     { bottom: 24px; gap: 40px; }
 }
 
 /* Tablet portrait — stack the form into pill input + full-width button. */
 @media (max-width: 768px) {
-  body { padding: 8px; }
+  body            { padding: 8px; }
   .hero {
     border-radius: 20px;
     padding: 84px 24px 76px;
   }
-  .hero__content { width: 100%; }
+  .hero__content  { width: 100%; }
   .hero__title br { display: none; }
   .hero__subtitle br { display: none; }
   .waitlist {
@@ -341,15 +293,15 @@ a { text-decoration: none; color: inherit; }
     font-size: 15px;
     border-radius: 60px;
   }
-  .logo { top: 20px; left: 24px; }
-  .logo svg { width: 32px; height: 32px; }
-  .footer-nav { bottom: 20px; gap: 28px; }
+  .logo           { top: 20px; left: 24px; }
+  .logo svg       { width: 32px; height: 32px; }
+  .footer-nav     { bottom: 20px; gap: 28px; }
   .footer-nav__link { font-size: 10px; }
 }
 
 /* Mobile */
 @media (max-width: 480px) {
-  body { padding: 0; }
+  body            { padding: 0; }
   .hero {
     border-radius: 0;
     min-height: 100vh;
@@ -357,14 +309,14 @@ a { text-decoration: none; color: inherit; }
     padding: 72px 24px 64px;
     box-shadow: none;
   }
-  .hero__content { gap: 20px; }
-  .hero__title { font-size: 34px; line-height: 42px; letter-spacing: -0.01em; }
+  .hero__content  { gap: 20px; }
+  .hero__title    { font-size: 34px; line-height: 42px; letter-spacing: -0.01em; }
   .hero__subtitle { font-size: 16px; }
-  .waitlist { max-width: 100%; }
+  .waitlist       { max-width: 100%; }
   .waitlist__input { padding: 15px 20px; font-size: 13px; }
-  .waitlist__btn { height: 52px; font-size: 14px; }
-  .logo { top: 16px; left: 20px; }
-  .logo svg { width: 28px; height: 28px; }
-  .footer-nav { bottom: 16px; gap: 20px; }
+  .waitlist__btn  { height: 52px; font-size: 14px; }
+  .logo           { top: 16px; left: 20px; }
+  .logo svg       { width: 28px; height: 28px; }
+  .footer-nav     { bottom: 16px; gap: 20px; }
   .footer-nav__link { font-size: 10px; }
 }

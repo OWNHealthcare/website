@@ -20,25 +20,12 @@
 
     <div class="hero__content">
       <h1 class="hero__title">Das Konto für<br>deine Gesundheit</h1>
-      <p class="hero__subtitle">Alle deine Gesundheitsdaten an einem Ort.<br> Sicher, privat und jederzeit griffbereit.</p>
+      <p class="hero__subtitle">Alle deine Gesundheitsdaten an einem Ort.<br>Sicher, privat und jederzeit griffbereit.</p>
 
-      <div class="signup">
-      <form class="waitlist" id="waitlist-form" action="/api/waitlist" method="post" novalidate>
-        <input type="email" name="email" class="waitlist__input" placeholder="DEINE EMAIL"
-               autocomplete="email" required>
-        <!-- Honeypot gegen Bots: für Menschen unsichtbar -->
-        <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true"
-               class="waitlist__hp">
-        <button type="submit" class="waitlist__btn" id="waitlist-btn">IN WARTELISTE EINTRAGEN</button>
+      <form class="waitlist" action="#" method="post">
+        <input type="email" class="waitlist__input" placeholder="DEINE EMAIL" required>
+        <button type="submit" class="waitlist__btn">IN WARTELISTE EINTRAGEN</button>
       </form>
-
-      <p class="waitlist__status" id="waitlist-status" role="status" aria-live="polite"></p>
-
-      <p class="waitlist__consent">
-        Mit der Anmeldung stimmst du zu, dass wir dir eine Bestätigungsmail senden.
-        Mehr dazu in der <a href="datenschutz.html">Datenschutzerklärung</a>.
-      </p>
-      </div>
     </div>
 
     <nav class="footer-nav">
@@ -48,65 +35,6 @@
     </nav>
 
   </section>
-
-  <script>
-    (function () {
-      var form   = document.getElementById('waitlist-form');
-      var btn    = document.getElementById('waitlist-btn');
-      var status = document.getElementById('waitlist-status');
-      var input  = form.querySelector('input[name="email"]');
-      var label  = btn.textContent;
-
-      function show(msg, ok) {
-        status.textContent = msg;
-        status.className = 'waitlist__status is-visible ' + (ok ? 'is-ok' : 'is-error');
-      }
-
-      form.addEventListener('submit', async function (e) {
-        e.preventDefault();
-
-        var email = input.value.trim();
-        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
-          show('Bitte gib eine gültige E-Mail-Adresse ein.', false);
-          input.focus();
-          return;
-        }
-
-        btn.disabled = true;
-        btn.textContent = 'WIRD GESENDET …';
-        status.className = 'waitlist__status';
-
-        try {
-          var res = await fetch('/api/waitlist', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              email: email,
-              website: form.querySelector('input[name="website"]').value
-            })
-          });
-          var data = await res.json().catch(function () { return {}; });
-
-          if (!res.ok) {
-            show(data.error || 'Da ist etwas schiefgelaufen. Bitte später erneut versuchen.', false);
-            return;
-          }
-
-          if (data.status === 'already_confirmed') {
-            show('Du stehst bereits auf der Warteliste.', true);
-          } else {
-            show('Fast geschafft – bitte bestätige den Link in deiner E-Mail.', true);
-          }
-          form.reset();
-        } catch (err) {
-          show('Keine Verbindung zum Server. Bitte später erneut versuchen.', false);
-        } finally {
-          btn.disabled = false;
-          btn.textContent = label;
-        }
-      });
-    })();
-  </script>
 
 </body>
 </html>
