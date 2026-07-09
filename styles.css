@@ -39,10 +39,19 @@ a { text-decoration: none; color: inherit; }
   width: 100%;
   max-width: 1895px;
   aspect-ratio: 1895 / 988;
+  /* Keep the nice card proportion, but never let it get so short that the
+     content collides with the footer — grow taller when the viewport forces it. */
+  min-height: min(988px, calc(100vh - 40px));
   background: url('assets/gradient-bg.png') no-repeat center / cover;
   border-radius: 28px;
   overflow: hidden;
   box-shadow: 0 32px 80px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* Extra bottom padding reserves space for the absolute footer nav. */
+  padding: 6% 5% clamp(96px, 12%, 160px);
 }
 
 /* ── Gradient Animation Overlays ── */
@@ -102,34 +111,30 @@ a { text-decoration: none; color: inherit; }
 
 /* ── Hero Content ── */
 .hero__content {
-  position: absolute;
-  top: 27.13%;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
   z-index: 5;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 36px;
-  width: 52.56%;
+  gap: clamp(24px, 3vw, 36px);
+  width: min(100%, 1000px);
 }
 
 .hero__title {
   font-family: 'Google Sans', sans-serif;
   font-weight: 500;
-  font-size: 100px;
-  line-height: 117px;
+  font-size: clamp(38px, 6.2vw, 100px);
+  line-height: 1.14;
   letter-spacing: -0.02em;
   color: #132532;
   text-align: center;
-  width: 87.35%;
 }
 
 .hero__subtitle {
   font-family: 'Google Sans', sans-serif;
   font-weight: 400;
-  font-size: 34px;
-  line-height: 1.7;
+  font-size: clamp(17px, 2.1vw, 34px);
+  line-height: 1.6;
   letter-spacing: 0;
   color: #132532;
   text-align: center;
@@ -269,71 +274,41 @@ a { text-decoration: none; color: inherit; }
    Responsive
    ══════════════════════════════ */
 
-/* Large laptop */
-@media (max-width: 1600px) {
-  .hero__title    { font-size: 84px; line-height: 100px; }
-  .hero__subtitle { font-size: 30px; }
-  .waitlist       { width: 640px; height: 82px; }
-  .waitlist__btn  { width: 250px; height: 62px; }
-}
-
-/* Small laptop */
+/* Laptops — just trim the form to fit narrower cards (type scales via clamp). */
 @media (max-width: 1280px) {
-  .hero__title    { font-size: 68px; line-height: 82px; }
-  .hero__subtitle { font-size: 26px; }
-  .hero__content  { width: 62%; gap: 28px; }
-  .waitlist       { width: 560px; height: 74px; padding-left: 40px; }
-  .waitlist__btn  { width: 220px; height: 56px; font-size: 14px; }
-  .logo           { top: 28px; left: 48px; }
-  .logo svg       { width: 40px; height: 40px; }
-  .footer-nav     { bottom: 28px; gap: 48px; }
-  .footer-nav__link { font-size: 12px; }
+  .waitlist { width: 100%; max-width: 560px; }
+  .waitlist__btn { width: 220px; }
+  .logo { top: 28px; left: 48px; }
+  .logo svg { width: 40px; height: 40px; }
+  .footer-nav { bottom: 28px; gap: 48px; }
 }
 
-/* Tablet landscape */
+/* Tablet — fill the viewport, lighten radius/padding. */
 @media (max-width: 1024px) {
-  body            { padding: 12px; }
+  body { padding: 12px; }
   .hero {
     aspect-ratio: auto;
-    min-height: calc(100vh - 24px);
     border-radius: 24px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     background-position: center bottom;
-    background-size: cover;
+    padding: 96px 6% 88px;
   }
-  .hero__content {
-    position: relative;
-    top: auto; left: auto;
-    transform: none;
-    width: 80%;
-    gap: 24px;
-  }
-  .hero__title    { font-size: 54px; line-height: 64px; width: 100%; }
-  .hero__subtitle { font-size: 22px; }
-  .waitlist       { width: 100%; max-width: 520px; height: 70px; padding-left: 36px; }
-  .waitlist__btn  { width: 200px; height: 52px; font-size: 13px; }
-  .waitlist__input { font-size: 14px; }
-  .logo           { top: 24px; left: 32px; }
-  .logo svg       { width: 36px; height: 36px; }
-  .footer-nav     { bottom: 24px; gap: 40px; }
-  .footer-nav__link { font-size: 11px; }
+  .hero__content { width: 86%; }
+  .waitlist { max-width: 520px; }
+  .waitlist__btn { width: 200px; }
+  .logo { top: 24px; left: 32px; }
+  .logo svg { width: 36px; height: 36px; }
+  .footer-nav { bottom: 24px; gap: 40px; }
 }
 
-/* Tablet portrait */
+/* Tablet portrait — stack the form into pill input + full-width button. */
 @media (max-width: 768px) {
-  body            { padding: 8px; }
+  body { padding: 8px; }
   .hero {
     border-radius: 20px;
-    min-height: calc(100vh - 16px);
-    padding: 80px 24px 72px;
+    padding: 84px 24px 76px;
   }
-  .hero__content  { width: 100%; gap: 24px; }
-  .hero__title    { font-size: 38px; line-height: 46px; letter-spacing: -0.015em; width: 100%; }
+  .hero__content { width: 100%; }
   .hero__title br { display: none; }
-  .hero__subtitle { font-size: 17px; line-height: 1.6; }
   .hero__subtitle br { display: none; }
   .waitlist {
     flex-direction: column;
@@ -366,15 +341,15 @@ a { text-decoration: none; color: inherit; }
     font-size: 15px;
     border-radius: 60px;
   }
-  .logo           { top: 20px; left: 24px; }
-  .logo svg       { width: 32px; height: 32px; }
-  .footer-nav     { bottom: 20px; gap: 28px; }
+  .logo { top: 20px; left: 24px; }
+  .logo svg { width: 32px; height: 32px; }
+  .footer-nav { bottom: 20px; gap: 28px; }
   .footer-nav__link { font-size: 10px; }
 }
 
 /* Mobile */
 @media (max-width: 480px) {
-  body            { padding: 0; }
+  body { padding: 0; }
   .hero {
     border-radius: 0;
     min-height: 100vh;
@@ -382,14 +357,14 @@ a { text-decoration: none; color: inherit; }
     padding: 72px 24px 64px;
     box-shadow: none;
   }
-  .hero__content  { gap: 20px; }
-  .hero__title    { font-size: 34px; line-height: 42px; letter-spacing: -0.01em; }
+  .hero__content { gap: 20px; }
+  .hero__title { font-size: 34px; line-height: 42px; letter-spacing: -0.01em; }
   .hero__subtitle { font-size: 16px; }
-  .waitlist       { max-width: 100%; }
+  .waitlist { max-width: 100%; }
   .waitlist__input { padding: 15px 20px; font-size: 13px; }
-  .waitlist__btn  { height: 52px; font-size: 14px; }
-  .logo           { top: 16px; left: 20px; }
-  .logo svg       { width: 28px; height: 28px; }
-  .footer-nav     { bottom: 16px; gap: 20px; }
+  .waitlist__btn { height: 52px; font-size: 14px; }
+  .logo { top: 16px; left: 20px; }
+  .logo svg { width: 28px; height: 28px; }
+  .footer-nav { bottom: 16px; gap: 20px; }
   .footer-nav__link { font-size: 10px; }
 }
