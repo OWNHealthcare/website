@@ -30,8 +30,24 @@
         <button type="submit" class="waitlist__btn" id="waitlist-btn">IN WARTELISTE EINTRAGEN</button>
       </form>
 
-      <p id="waitlist-status" role="status" aria-live="polite"
-         style="display:none;font-family:'Google Sans',sans-serif;font-size:15px;font-weight:500;line-height:1.5;text-align:center;color:#132532;margin:0;"></p>
+    </div>
+
+    <!-- Toast-Popup für Formular-Feedback -->
+    <div id="waitlist-toast" role="status" aria-live="polite" style="
+        position:absolute;top:36px;left:50%;z-index:50;
+        display:flex;align-items:center;gap:12px;
+        max-width:min(92%,560px);padding:16px 26px;
+        background:linear-gradient(160deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,.35) 100%);
+        border:0.5px solid rgba(255,255,255,.6);border-radius:100px;
+        backdrop-filter:blur(16px) saturate(1.2);-webkit-backdrop-filter:blur(16px) saturate(1.2);
+        box-shadow:inset 0 0.5px 0 0 rgba(255,255,255,.7),0 12px 40px rgba(0,0,0,.18);
+        font-family:'Google Sans',sans-serif;font-size:15px;font-weight:500;line-height:1.4;color:#132532;
+        opacity:0;visibility:hidden;transform:translate(-50%,-16px);
+        transition:opacity .35s ease,transform .35s ease,visibility .35s;">
+      <span id="waitlist-toast-icon" aria-hidden="true" style="
+          display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;
+          width:26px;height:26px;border-radius:50%;background:#132532;color:#fff;"></span>
+      <span id="waitlist-toast-text"></span>
     </div>
 
     <nav class="footer-nav">
@@ -44,16 +60,31 @@
 
   <script>
     (function () {
-      var form   = document.getElementById('waitlist-form');
-      var btn    = document.getElementById('waitlist-btn');
-      var status = document.getElementById('waitlist-status');
-      var input  = form.querySelector('input[name="email"]');
-      var label  = btn.textContent;
+      var form  = document.getElementById('waitlist-form');
+      var btn   = document.getElementById('waitlist-btn');
+      var toast = document.getElementById('waitlist-toast');
+      var tIcon = document.getElementById('waitlist-toast-icon');
+      var tText = document.getElementById('waitlist-toast-text');
+      var input = form.querySelector('input[name="email"]');
+      var label = btn.textContent;
+      var hideTimer;
+
+      var CHECK = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      var CROSS = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>';
 
       function show(msg, ok) {
-        status.textContent = msg;
-        status.style.display = 'block';
-        status.style.color = ok ? '#132532' : '#8f2323';
+        clearTimeout(hideTimer);
+        tText.textContent = msg;
+        tIcon.innerHTML = ok ? CHECK : CROSS;
+        tIcon.style.background = ok ? '#132532' : '#8f2323';
+        toast.style.visibility = 'visible';
+        toast.style.opacity = '1';
+        toast.style.transform = 'translate(-50%, 0)';
+        hideTimer = setTimeout(function () {
+          toast.style.opacity = '0';
+          toast.style.transform = 'translate(-50%, -16px)';
+          toast.style.visibility = 'hidden';
+        }, ok ? 5000 : 6500);
       }
 
       form.addEventListener('submit', async function (e) {

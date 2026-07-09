@@ -1,4 +1,46 @@
-import { clientIp, rateLimited, supabase } from './_lib.js';
+import { SITE_URL, clientIp, rateLimited, sendMail, supabase } from './_lib.js';
+
+function welcomeMail() {
+  return {
+    subject: 'Du stehst auf der Warteliste 🎉',
+    text:
+      `Deine E-Mail ist bestätigt – du stehst jetzt offiziell auf der OWN-Health-Warteliste.\n\n` +
+      `Wir melden uns bei dir, sobald es losgeht. Du musst nichts weiter tun.\n\n` +
+      `Bis bald!\nDein OWN-Health-Team\n\n` +
+      `OWN Health UG (haftungsbeschränkt), Altonaer Straße 21, 10555 Berlin\n` +
+      `Du möchtest von der Warteliste gestrichen werden? Schreib uns an support@ownhealth.eu`,
+    html: `<!DOCTYPE html><html lang="de"><body style="margin:0;padding:0;background:#F1F1F1;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F1F1F1;padding:40px 16px;">
+    <tr><td align="center">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;">
+        <tr><td style="background:linear-gradient(160deg,#132532 0%,#1a6080 70%,#3db7ee 140%);background-color:#132532;border-radius:24px 24px 0 0;padding:36px 40px;text-align:center;">
+          <span style="font-family:'Google Sans',-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;font-size:22px;font-weight:600;letter-spacing:-0.01em;color:#ffffff;">OWN&nbsp;Health</span>
+        </td></tr>
+        <tr><td style="background:#ffffff;border-radius:0 0 24px 24px;padding:44px 40px;font-family:'Google Sans',-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;color:#132532;">
+          <h1 style="margin:0 0 14px;font-size:26px;font-weight:500;letter-spacing:-0.01em;">Willkommen an Bord 🎉</h1>
+          <p style="margin:0 0 22px;font-size:15px;line-height:1.7;color:#3d4f5c;">
+            Deine E-Mail ist bestätigt – du stehst jetzt offiziell auf der Warteliste für
+            <strong style="color:#132532;">OWN Health</strong>, das Konto für deine Gesundheit.
+          </p>
+          <p style="margin:0 0 30px;font-size:15px;line-height:1.7;color:#3d4f5c;">
+            Wir melden uns bei dir, sobald es losgeht. Du musst nichts weiter tun.
+          </p>
+          <p style="margin:0 0 30px;font-size:15px;line-height:1.7;color:#132532;font-weight:500;">
+            Bis bald!<br>Dein OWN-Health-Team
+          </p>
+          <hr style="border:none;border-top:1px solid #eef0f2;margin:0 0 22px;">
+          <p style="margin:0;font-size:12px;line-height:1.7;color:#8a96a0;">
+            OWN Health UG (haftungsbeschränkt) · Altonaer Straße 21 · 10555 Berlin<br>
+            Du möchtest von der Warteliste gestrichen werden?
+            <a href="mailto:support@ownhealth.eu" style="color:#8a96a0;">Schreib uns</a>.
+          </p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body></html>`,
+  };
+}
 
 function page(title, message, ok = true) {
   return `<!DOCTYPE html><html lang="de"><head>
@@ -59,6 +101,13 @@ export default async function handler(req, res) {
         updated_at: new Date().toISOString(),
       }),
     });
+
+    // Willkommens-Mail – Fehler hier dürfen die Bestätigung nicht blockieren.
+    try {
+      await sendMail({ to: rows[0].email, ...welcomeMail() });
+    } catch (mailErr) {
+      console.error('welcome mail error', mailErr);
+    }
 
     return res.status(200).send(page('Du bist dabei', 'Deine E-Mail ist bestätigt. Wir melden uns, sobald es losgeht.'));
   } catch (err) {
