@@ -123,7 +123,7 @@ a { text-decoration: none; color: inherit; }
 .hero__title {
   font-family: 'Google Sans', sans-serif;
   font-weight: 500;
-  font-size: clamp(38px, 6.2vw, 100px);
+  font-size: clamp(34px, 5.6vw, 90px);
   line-height: 1.14;
   letter-spacing: -0.02em;
   color: #132532;
@@ -310,7 +310,7 @@ a { text-decoration: none; color: inherit; }
     box-shadow: none;
   }
   .hero__content  { gap: 20px; }
-  .hero__title    { font-size: 34px; line-height: 42px; letter-spacing: -0.01em; }
+  .hero__title    { font-size: 31px; line-height: 39px; letter-spacing: -0.01em; }
   .hero__subtitle { font-size: 16px; }
   .waitlist       { max-width: 100%; }
   .waitlist__input { padding: 15px 20px; font-size: 13px; }
